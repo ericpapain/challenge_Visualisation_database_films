@@ -1,0 +1,11 @@
+streamlit
+pandas
+plotly
+matplotlib
+seaborn
+langchain
+langchain-huggingface
+langchain-experimental
+faiss-cpu
+sentence-transformers
+tabulate

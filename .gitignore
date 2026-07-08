@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environnements virtuels
+venv/
+env/
+.venv/
+
+# Variables d'environnement
+.env
+
+# Fichiers générés par le système (Mac/Windows)
+.DS_Store
+Thumbs.db
+
+# Index local FAISS (Sera recréé automatiquement par l'application au 1er lancement)
+# faiss_index/  <-- Décommentez si le dossier est trop lourd pour Git
