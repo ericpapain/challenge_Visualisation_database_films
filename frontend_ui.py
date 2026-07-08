@@ -96,22 +96,32 @@ def inject_custom_css():
         }
         
         /* Modale "Voir les détails" (Pop-up) */
-        div[role="dialog"] {
+        div[role="dialog"], 
+        div[data-testid="stDialog"],
+        div[data-testid="stModal"] {
             background-color: #FFFFFF !important; /* Fond blanc pour la lisibilité */
         }
-        div[role="dialog"] p,
-        div[role="dialog"] span,
-        div[role="dialog"] strong,
-        div[role="dialog"] h1,
-        div[role="dialog"] h2,
-        div[role="dialog"] h3 {
+        div[role="dialog"] p, div[data-testid="stDialog"] p, div[data-testid="stModal"] p,
+        div[role="dialog"] span, div[data-testid="stDialog"] span, div[data-testid="stModal"] span,
+        div[role="dialog"] strong, div[data-testid="stDialog"] strong, div[data-testid="stModal"] strong,
+        div[role="dialog"] h1, div[data-testid="stDialog"] h1, div[data-testid="stModal"] h1,
+        div[role="dialog"] h2, div[data-testid="stDialog"] h2, div[data-testid="stModal"] h2,
+        div[role="dialog"] h3, div[data-testid="stDialog"] h3, div[data-testid="stModal"] h3 {
             color: #000000 !important; /* Force le texte de la modale en noir */
         }
         /* Surcharge pour s'assurer que les conteneurs markdown dans la modale sont bien noirs */
         div[role="dialog"] div[data-testid="stMarkdownContainer"] p,
+        div[data-testid="stDialog"] div[data-testid="stMarkdownContainer"] p,
+        div[data-testid="stModal"] div[data-testid="stMarkdownContainer"] p,
         div[role="dialog"] div[data-testid="stMarkdownContainer"] strong,
-        div[role="dialog"] div[data-testid="stMarkdownContainer"] span {
+        div[data-testid="stDialog"] div[data-testid="stMarkdownContainer"] strong,
+        div[data-testid="stModal"] div[data-testid="stMarkdownContainer"] strong,
+        div[role="dialog"] div[data-testid="stMarkdownContainer"] span,
+        div[data-testid="stDialog"] div[data-testid="stMarkdownContainer"] span,
+        div[data-testid="stModal"] div[data-testid="stMarkdownContainer"] span,
+        div[role="dialog"] hr, div[data-testid="stDialog"] hr, div[data-testid="stModal"] hr {
             color: #000000 !important;
+            border-color: #000000 !important;
         }
         
         /* Onglets */
