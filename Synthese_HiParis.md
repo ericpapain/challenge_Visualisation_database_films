@@ -1,5 +1,8 @@
 # Note de Synthèse : Plateforme de Visualisation "MovieDB Explorer" (Hi! PARIS)
 
+> **🚀 Application en direct (Live Demo) :** [Cliquez ici pour tester l'application (Streamlit Cloud)](https://hi-paris-challenge-visualisation.streamlit.app/)
+> *Le projet a été entièrement déployé sur le Cloud pour faciliter l'évaluation du jury sans aucune configuration locale.*
+
 ## 1. Méthodologie
 
 Notre démarche s'est articulée autour de la conception d'une plateforme robuste, interactive et esthétique, mettant l'expérience utilisateur au centre tout en exploitant des technologies avancées d'analyse de données et d'Intelligence Artificielle.
