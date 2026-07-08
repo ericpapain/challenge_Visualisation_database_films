@@ -121,11 +121,9 @@ with tab2:
 # ==============================================================
 # 5. CHATBOT FLOTTANT ET AGENTS IA
 # ==============================================================
-if not hf_api_key:
-    st.warning("Veuillez entrer votre Token HuggingFace dans la barre latérale pour activer l'Assistant IA.")
-else:
+if True:
     try:
-        chat_model = get_chat_model(hf_api_key)
+        chat_model = get_chat_model(hf_api_key) if hf_api_key else None
         
         # Etat persistant
         if "messages_agent" not in st.session_state:
@@ -145,8 +143,11 @@ else:
         with st.popover("💬", help="Ouvrir l'Assistant IA"):
             st.markdown("### 🤖 Assistant Cinéma IA")
             
+            if not hf_api_key:
+                st.warning("⚠️ **Veuillez entrer votre Token HuggingFace dans la barre latérale pour activer l'IA.**")
+            
             chat_container = st.container(height=400)
-            st.text_input("Posez votre question ici...", key="chat_input_widget", on_change=submit_chat, placeholder="Ex: Meilleurs films de 2020...")
+            st.text_input("Posez votre question ici...", key="chat_input_widget", on_change=submit_chat, placeholder="Ex: Meilleurs films de 2020...", disabled=not bool(hf_api_key))
             
             with chat_container:
                 for idx, msg in enumerate(st.session_state.messages_agent):
