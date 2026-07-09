@@ -144,21 +144,12 @@ def inject_custom_css():
         }
         
         /* Spécificité MAXIMALE pour forcer le texte en blanc à l'intérieur du chatbot, qu'il soit dans un popover ou une modale */
-        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] p, 
-        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] span, 
-        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] strong,
-        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] a,
-        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] li,
-        div[role="dialog"] div[data-testid="stChatMessage"] p, 
-        div[role="dialog"] div[data-testid="stChatMessage"] span, 
-        div[role="dialog"] div[data-testid="stChatMessage"] strong,
-        div[role="dialog"] div[data-testid="stChatMessage"] a,
-        div[role="dialog"] div[data-testid="stChatMessage"] li,
-        div[data-testid="stChatMessage"] p, 
-        div[data-testid="stChatMessage"] span, 
-        div[data-testid="stChatMessage"] strong,
-        div[data-testid="stChatMessage"] a,
-        div[data-testid="stChatMessage"] li {
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"],
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] *,
+        div[role="dialog"] div[data-testid="stChatMessage"],
+        div[role="dialog"] div[data-testid="stChatMessage"] *,
+        div[data-testid="stChatMessage"],
+        div[data-testid="stChatMessage"] * {
             color: #FFFFFF !important;
         }
         
