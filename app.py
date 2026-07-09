@@ -81,8 +81,9 @@ if selected_lang != "Toutes":
 st.title("🎬 Plateforme d'Exploration Cinématographique")
 st.markdown("""
 <div class="pedagogy-box">
-    <strong>Objectif Pédagogique :</strong> Cette application démontre comment transformer un simple fichier CSV en une expérience interactive. 
-    Elle illustre 3 concepts clés : l'exploration visuelle (UI), l'analyse statistique (Dataviz), et une architecture d'Agents (LangChain) pour interroger la donnée.
+    <strong>🌟 La Révolution de l'Exploration Cinématographique :</strong> 
+    Bien plus qu'un simple catalogue, cette plateforme vous permet d'explorer des films de manière intelligente grâce à notre <strong>Assistant IA intégré</strong>. 
+    Interagissez avec la base de données en <strong>langage naturel</strong> (Chatbot) : décrivez vos envies complexes ou même le <strong>type d'émotion</strong> que vous souhaitez ressentir ! Le système IA se charge d'analyser votre requête sémantique pour vous formuler des recommandations de films hyper-personnalisées et pertinentes.
 </div>
 """, unsafe_allow_html=True)
 
