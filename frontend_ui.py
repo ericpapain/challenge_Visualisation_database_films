@@ -120,19 +120,34 @@ def inject_custom_css():
         div[role="dialog"] h3, div[data-testid="stDialog"] h3, div[data-testid="stModal"] h3 {
             color: #000000 !important; /* Force le texte de la modale en noir */
         }
-        /* Surcharge pour s'assurer que les conteneurs markdown dans la modale sont bien noirs */
-        div[role="dialog"] div[data-testid="stMarkdownContainer"] p,
-        div[data-testid="stDialog"] div[data-testid="stMarkdownContainer"] p,
-        div[data-testid="stModal"] div[data-testid="stMarkdownContainer"] p,
-        div[role="dialog"] div[data-testid="stMarkdownContainer"] strong,
-        div[data-testid="stDialog"] div[data-testid="stMarkdownContainer"] strong,
-        div[data-testid="stModal"] div[data-testid="stMarkdownContainer"] strong,
-        div[role="dialog"] div[data-testid="stMarkdownContainer"] span,
-        div[data-testid="stDialog"] div[data-testid="stMarkdownContainer"] span,
-        div[data-testid="stModal"] div[data-testid="stMarkdownContainer"] span,
+        /* Surcharge pour s'assurer que les conteneurs markdown dans la modale sont bien noirs, SAUF pour le chatbot */
+        div[role="dialog"] div[data-testid="stMarkdownContainer"] p:not(div[data-testid="stChatMessage"] *),
+        div[data-testid="stDialog"] div[data-testid="stMarkdownContainer"] p:not(div[data-testid="stChatMessage"] *),
+        div[data-testid="stModal"] div[data-testid="stMarkdownContainer"] p:not(div[data-testid="stChatMessage"] *),
+        div[role="dialog"] div[data-testid="stMarkdownContainer"] strong:not(div[data-testid="stChatMessage"] *),
+        div[data-testid="stDialog"] div[data-testid="stMarkdownContainer"] strong:not(div[data-testid="stChatMessage"] *),
+        div[data-testid="stModal"] div[data-testid="stMarkdownContainer"] strong:not(div[data-testid="stChatMessage"] *),
+        div[role="dialog"] div[data-testid="stMarkdownContainer"] span:not(div[data-testid="stChatMessage"] *),
+        div[data-testid="stDialog"] div[data-testid="stMarkdownContainer"] span:not(div[data-testid="stChatMessage"] *),
+        div[data-testid="stModal"] div[data-testid="stMarkdownContainer"] span:not(div[data-testid="stChatMessage"] *),
         div[role="dialog"] hr, div[data-testid="stDialog"] hr, div[data-testid="stModal"] hr {
             color: #000000 !important;
             border-color: #000000 !important;
+        }
+        
+        /* Personnalisation des bulles du Chatbot pour un texte blanc */
+        div[data-testid="stChatMessage"] {
+            background-color: #021a3a !important; /* Bleu nuit Hi! Paris */
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        div[data-testid="stChatMessage"] p, 
+        div[data-testid="stChatMessage"] span, 
+        div[data-testid="stChatMessage"] strong,
+        div[data-testid="stChatMessage"] a,
+        div[data-testid="stChatMessage"] li {
+            color: #FFFFFF !important;
         }
         
         /* Onglets */

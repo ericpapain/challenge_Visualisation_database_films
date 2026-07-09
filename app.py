@@ -320,6 +320,8 @@ if True:
                                 error_str = str(e)
                                 if "402" in error_str or "Payment Required" in error_str or "depleted" in error_str:
                                     error_msg = "⚠️ **Crédits API HuggingFace épuisés.** Votre quota mensuel gratuit est atteint."
+                                elif "401" in error_str or "Unauthorized" in error_str or "Invalid username" in error_str:
+                                    error_msg = "⚠️ Le token a ete expirer, pensez a reactiver ou a demander a epmezatio@gmail.com de le reactualiser."
                                 else:
                                     import traceback
                                     error_msg = f"❌ Erreur : {repr(e)}\n\n```\n{traceback.format_exc()}\n```"
