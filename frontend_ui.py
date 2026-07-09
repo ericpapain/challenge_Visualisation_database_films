@@ -75,15 +75,15 @@ def inject_custom_css():
             color: #FFFFFF !important;
         }
         
-        /* Effet de survol sur les cartes de films */
-        div[data-testid="stVerticalBlockBorderWrapper"] {
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        /* Effet de survol robuste sur les affiches de films */
+        .movie-card-internal {
+            transition: transform 0.3s ease, filter 0.3s ease;
         }
-        div[data-testid="stVerticalBlockBorderWrapper"]:hover {
-            transform: translateY(-5px) scale(1.02) !important;
-            box-shadow: 0 10px 20px rgba(233, 4, 77, 0.4) !important;
-            border-color: #E9044D !important;
-            z-index: 10;
+        .movie-card-internal:hover {
+            transform: scale(1.03) !important;
+        }
+        .movie-card-internal:hover img {
+            filter: brightness(1.1);
         }
         
         [data-testid="stVerticalBlockBorderWrapper"] p,

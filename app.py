@@ -89,10 +89,24 @@ st.markdown("""
 tab1, tab2 = st.tabs(["🖼️ 1. Exploration Visuelle", "📊 2. Analyse Statistique"])
 
 with tab1:
-    st.subheader(f"Résultats : {len(filtered_df):,} films trouvés")
-    max_display = st.selectbox("Pagination :", [20, 60, 100], index=1)
-    display_df = filtered_df.head(max_display)
+    if "page" not in st.session_state:
+        st.session_state.page = 1
+
+    colA, colB = st.columns([3, 1])
+    with colA:
+        st.subheader(f"Résultats : {len(filtered_df):,} films trouvés")
+    with colB:
+        items_per_page = st.selectbox("Films par page :", [12, 24, 60], index=1)
+        
+    total_pages = max(1, (len(filtered_df) - 1) // items_per_page + 1)
     
+    # S'assurer que la page reste valide si le nombre de résultats change (ex: nouveau filtre)
+    if st.session_state.page > total_pages:
+        st.session_state.page = 1
+        
+    start_idx = (st.session_state.page - 1) * items_per_page
+    end_idx = start_idx + items_per_page
+    display_df = filtered_df.iloc[start_idx:end_idx]
     # Construction d'une vraie grille (Nouvelle ligne de colonnes à chaque itération pour un alignement parfait)
     for i in range(0, len(display_df), 4):
         cols = st.columns(4)
@@ -128,6 +142,22 @@ with tab1:
                                 genres=row['Genre'],
                                 overview=row.get('Overview', 'Pas de synopsis disponible.')
                             )
+                            
+    # ---------------------------------------------
+    # CONTRÔLES DE PAGINATION EN BAS DE GRILLE
+    # ---------------------------------------------
+    st.write("---")
+    col1, col2, col3, col4, col5 = st.columns([1, 1, 2, 1, 1])
+    with col2:
+        if st.button("⬅️ Précédent", disabled=(st.session_state.page <= 1), use_container_width=True):
+            st.session_state.page -= 1
+            st.rerun()
+    with col3:
+        st.markdown(f"<div style='text-align: center; padding-top: 5px;'><b>Page {st.session_state.page} sur {total_pages}</b></div>", unsafe_allow_html=True)
+    with col4:
+        if st.button("Suivant ➡️", disabled=(st.session_state.page >= total_pages), use_container_width=True):
+            st.session_state.page += 1
+            st.rerun()
 
 with tab2:
     render_dashboard_tab(df)
