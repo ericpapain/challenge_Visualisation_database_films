@@ -6,7 +6,7 @@ Cette application est un démonstrateur interactif alliant **Exploration Visuell
 
 ---
 
-## 🏗️ Architecture Globale du Système
+## Architecture Globale du Système
 
 L'application suit une **architecture en couches (Layered Architecture)** qui garantit une séparation claire des responsabilités et une maintenabilité optimale :
 
@@ -77,7 +77,7 @@ Pour garantir une base de code propre, modulaire et professionnelle (Software En
 
 ---
 
-## 📚 Stack Technologique
+##  Stack Technologique
 
 | **Catégorie** | **Technologie** | **Version** | **Utilisation** | **Raison du choix** |
 |:---|:---|:---|:---|:---|
@@ -95,7 +95,7 @@ Pour garantir une base de code propre, modulaire et professionnelle (Software En
 | **Styling** | CSS Personnalisé | - | Branding Hi! PARIS (Bleu/Rose) | Contrôle complet du design, animations fluides |
 | **Gestion Tokens** | Streamlit Secrets | - | Stockage sécurisé des clés API | Variables d'environnement, non exposées au code |
 
-### 💡 Justification de l'architecture :
+###  Justification de l'architecture :
 - **Modularité** : Chaque couche a une responsabilité unique (SRP)
 - **Testabilité** : Facile d'isoler et tester chaque composant
 - **Scalabilité** : Possible de remplacer une couche (ex: passer de FAISS à Pinecone)
