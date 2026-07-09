@@ -76,11 +76,11 @@ def inject_custom_css():
         }
         
         /* Effet de survol sur les cartes de films */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.movie-card-internal) {
+        div[data-testid="stVerticalBlockBorderWrapper"] {
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.movie-card-internal):hover {
-            transform: translateY(-5px) scale(1.02);
+        div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+            transform: translateY(-5px) scale(1.02) !important;
             box-shadow: 0 10px 20px rgba(233, 4, 77, 0.4) !important;
             border-color: #E9044D !important;
             z-index: 10;
