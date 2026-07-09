@@ -48,7 +48,6 @@ with st.spinner("Initialisation du RAG Sémantique..."):
 # ==========================================
 # 3. INTERFACE UTILISATEUR : BARRE LATÉRALE
 # ==========================================
-st.sidebar.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1200px-Python-logo-notext.svg.png", width=50)
 st.sidebar.markdown("### VISUALISATION INTELLIGENTE")
 st.sidebar.info("Challenge de Visualisation de Base de Données de Films.")
 
