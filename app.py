@@ -103,13 +103,15 @@ with tab1:
                 poster_url = row['Poster_Url'] if pd.notna(row['Poster_Url']) and row['Poster_Url'] != "" else "https://via.placeholder.com/300x450.png?text=No+Poster"
                 
                 with cols[j]:
-                    # Hauteur fixe réduite à 420px
-                    with st.container(border=True, height=420):
+                    # Hauteur fixe réduite à 390px (0.5cm de moins)
+                    with st.container(border=True, height=390):
                         # Utilisation de HTML pour figer la hauteur de l'image et forcer le titre sur 2 lignes max
                         st.markdown(f'''
-                        <img src="{poster_url}" style="width: 100%; height: 220px; object-fit: cover; border-radius: 5px; margin-bottom: 10px;" />
-                        <div style="height: 3em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px;">
-                            <strong>{row["Title"]}</strong>
+                        <div class="movie-card-internal">
+                            <img src="{poster_url}" style="width: 100%; height: 190px; object-fit: cover; border-radius: 5px; margin-bottom: 10px;" />
+                            <div style="height: 3em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px;">
+                                <strong>{row["Title"]}</strong>
+                            </div>
                         </div>
                         ''', unsafe_allow_html=True)
                         
