@@ -143,13 +143,27 @@ def inject_custom_css():
             margin-bottom: 10px;
         }
         
-        /* Spécificité MAXIMALE pour forcer le texte en blanc à l'intérieur du chatbot, qu'il soit dans un popover ou une modale */
-        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"],
-        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] *,
-        div[role="dialog"] div[data-testid="stChatMessage"],
-        div[role="dialog"] div[data-testid="stChatMessage"] *,
-        div[data-testid="stChatMessage"],
-        div[data-testid="stChatMessage"] * {
+        /* Spécificité MAXIMALE (plus forte que le sélecteur des modales) pour forcer le texte en blanc à l'intérieur du chatbot */
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] p,
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] span,
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] strong,
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] em,
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] i,
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] b,
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] li,
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] ul,
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] ol,
+        div[role="dialog"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] a,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] p,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] span,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] strong,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] em,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] i,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] b,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] li,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] ul,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] ol,
+        div[data-testid="stPopoverBody"] div[data-testid="stChatMessage"] div[data-testid="stMarkdownContainer"] a {
             color: #FFFFFF !important;
         }
         
