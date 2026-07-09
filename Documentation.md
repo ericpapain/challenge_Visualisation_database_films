@@ -1,4 +1,4 @@
-# Plateforme d'Exploration Cinématographique (Hi! PARIS) 
+# Plateforme d'Exploration Cinématographique
 
 ## Vous pouvez accéder directement à l'application via le lien : https://hi-paris-challenge-visualisation.streamlit.app/
 
