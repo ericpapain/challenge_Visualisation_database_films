@@ -17,3 +17,9 @@ Thumbs.db
 
 # Index local FAISS (Sera recréé automatiquement par l'application au 1er lancement)
 # faiss_index/  <-- Décommentez si le dossier est trop lourd pour Git
+EXO.md
+data.md 
+rapport_synthese.md
+Synthese_HiParis.docx
+Synthese_HiParis.md
+Synthese_HiParis.pdf

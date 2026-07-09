@@ -81,7 +81,7 @@ if selected_lang != "Toutes":
 st.title("🎬 Plateforme d'Exploration Cinématographique")
 st.markdown("""
 <div class="pedagogy-box">
-    <strong>🌟 La Révolution de l'Exploration Cinématographique :</strong> 
+    <strong>Visualisation Intelligente:</strong> 
     Bien plus qu'un simple catalogue, cette plateforme vous permet d'explorer des films de manière intelligente grâce à notre <strong>Assistant IA intégré</strong>. 
     Interagissez avec la base de données en <strong>langage naturel</strong> (Chatbot) : décrivez vos envies complexes ou même le <strong>type d'émotion</strong> que vous souhaitez ressentir ! Le système IA se charge d'analyser votre requête sémantique pour vous formuler des recommandations de films hyper-personnalisées et pertinentes.
 </div>
