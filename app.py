@@ -103,13 +103,18 @@ with tab1:
                 poster_url = row['Poster_Url'] if pd.notna(row['Poster_Url']) and row['Poster_Url'] != "" else "https://via.placeholder.com/300x450.png?text=No+Poster"
                 
                 with cols[j]:
-                    # Hauteur fixe (ex: 550) pour forcer l'alignement de toutes les cartes peu importe la longueur du titre
-                    with st.container(border=True, height=550):
-                        st.image(poster_url, use_container_width=True)
-                        st.markdown(f"**{row['Title']}**")
+                    # Hauteur fixe réduite à 420px
+                    with st.container(border=True, height=420):
+                        # Utilisation de HTML pour figer la hauteur de l'image et forcer le titre sur 2 lignes max
+                        st.markdown(f'''
+                        <img src="{poster_url}" style="width: 100%; height: 220px; object-fit: cover; border-radius: 5px; margin-bottom: 10px;" />
+                        <div style="height: 3em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 5px;">
+                            <strong>{row["Title"]}</strong>
+                        </div>
+                        ''', unsafe_allow_html=True)
                         
                         year = row['Release_Date'].year if pd.notna(row['Release_Date']) else 'N/A'
-                        st.caption(f"📅 {year} | ⭐ {row['Vote_Average']} ({row['Vote_Count']} votes)")
+                        st.caption(f"📅 {year} | ⭐ {row['Vote_Average']}")
                         
                         if st.button("Voir les détails", key=f"details_btn_{idx}", use_container_width=True):
                             show_movie_details(
