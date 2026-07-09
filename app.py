@@ -93,29 +93,34 @@ with tab1:
     max_display = st.selectbox("Pagination :", [20, 60, 100], index=1)
     display_df = filtered_df.head(max_display)
     
-    cols = st.columns(4)
-    for i, (index, row) in enumerate(display_df.iterrows()):
-        col = cols[i % 4]
-        poster_url = row['Poster_Url'] if pd.notna(row['Poster_Url']) and row['Poster_Url'] != "" else "https://via.placeholder.com/300x450.png?text=No+Poster"
-        
-        with col:
-            with st.container(border=True):
-                st.image(poster_url, use_container_width=True)
-                st.markdown(f"**{row['Title']}**")
+    # Construction d'une vraie grille (Nouvelle ligne de colonnes à chaque itération pour un alignement parfait)
+    for i in range(0, len(display_df), 4):
+        cols = st.columns(4)
+        for j in range(4):
+            if i + j < len(display_df):
+                row = display_df.iloc[i + j]
+                idx = display_df.index[i + j]
+                poster_url = row['Poster_Url'] if pd.notna(row['Poster_Url']) and row['Poster_Url'] != "" else "https://via.placeholder.com/300x450.png?text=No+Poster"
                 
-                year = row['Release_Date'].year if pd.notna(row['Release_Date']) else 'N/A'
-                st.caption(f"📅 {year} | ⭐ {row['Vote_Average']} ({row['Vote_Count']} votes)")
-                
-                if st.button("Voir les détails", key=f"details_btn_{index}", use_container_width=True):
-                    show_movie_details(
-                        title=row['Title'],
-                        poster_url=poster_url,
-                        release_year=year,
-                        vote=row['Vote_Average'],
-                        votes=row['Vote_Count'],
-                        genres=row['Genre'],
-                        overview=row.get('Overview', 'Pas de synopsis disponible.')
-                    )
+                with cols[j]:
+                    # Hauteur fixe (ex: 550) pour forcer l'alignement de toutes les cartes peu importe la longueur du titre
+                    with st.container(border=True, height=550):
+                        st.image(poster_url, use_container_width=True)
+                        st.markdown(f"**{row['Title']}**")
+                        
+                        year = row['Release_Date'].year if pd.notna(row['Release_Date']) else 'N/A'
+                        st.caption(f"📅 {year} | ⭐ {row['Vote_Average']} ({row['Vote_Count']} votes)")
+                        
+                        if st.button("Voir les détails", key=f"details_btn_{idx}", use_container_width=True):
+                            show_movie_details(
+                                title=row['Title'],
+                                poster_url=poster_url,
+                                release_year=year,
+                                vote=row['Vote_Average'],
+                                votes=row['Vote_Count'],
+                                genres=row['Genre'],
+                                overview=row.get('Overview', 'Pas de synopsis disponible.')
+                            )
 
 with tab2:
     render_dashboard_tab(df)
