@@ -190,8 +190,10 @@ if True:
             if not hf_api_key:
                 st.warning("⚠️ **Veuillez entrer votre Token HuggingFace dans la barre latérale pour activer l'IA.**")
             
-            chat_container = st.container(height=400)
+            # La zone de saisie est placée EN HAUT pour être toujours visible sans scroll !
             st.text_input("Posez votre question ici...", key="chat_input_widget", on_change=submit_chat, placeholder="Ex: Meilleurs films de 2020...", disabled=not bool(hf_api_key))
+            
+            chat_container = st.container(height=400)
             
             with chat_container:
                 for idx, msg in enumerate(st.session_state.messages_agent):
