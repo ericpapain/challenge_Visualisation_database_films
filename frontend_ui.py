@@ -194,70 +194,7 @@ def inject_custom_css():
                 transform: scale(1.05);
                 box-shadow: 0 0 0 20px rgba(233, 4, 77, 0);
             }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(233, 4, 77, 0);
-            }
-        }
-        
-        div[data-testid="stFragment"]:has(div[data-testid="stPopover"]),
-        div[data-testid="stPopover"] {
-            position: fixed !important;
-            bottom: 50px !important;
-            right: 50px !important;
-            z-index: 999999 !important;
-            width: auto !important;
-            height: auto !important;
-            display: inline-block !important;
-        }
-        div[data-testid="stPopover"] button {
-            border-radius: 50% !important;
-            width: 80px !important;    /* Taille réduite selon votre demande */
-            height: 80px !important;
-            background: linear-gradient(135deg, #042B59, #E9044D) !important; /* Dégradé aux couleurs Hi! Paris */
-            color: white !important;
-            border: 4px solid white !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            transition: transform 0.2s ease;
-            animation: pulse-glow 2s infinite !important; /* Animation de clignotement/pulsation */
-        }
-        div[data-testid="stPopover"] button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 30px rgba(233, 4, 77, 0.8) !important;
-        }
-        div[data-testid="stPopover"] button p {
-            font-size: 45px !important;  /* Taille de l'icône réduite */
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 1 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-        
-        /* Style du texte à l'intérieur du Chatbot (fenêtre) */
-        div[data-testid="stPopoverBody"] p,
-        div[data-testid="stPopoverBody"] li,
-        div[data-testid="stPopoverBody"] span,
-        div[data-testid="stPopoverBody"] strong,
-        div[data-testid="stPopoverBody"] em,
-        div[data-testid="stPopoverBody"] .stMarkdown {
-            font-size: 12px !important;
-            color: #000000 !important; /* Force le texte du chatbot en noir */
-        }
-        div[data-testid="stPopoverBody"] h3,
-        div[data-testid="stPopoverBody"] h1,
-        div[data-testid="stPopoverBody"] h2 {
-            font-size: 16px !important;
-            color: #000000 !important;
-        }
-        div[data-testid="stPopoverBody"] pre, 
-        div[data-testid="stPopoverBody"] code {
-            font-size: 10px !important;
-            color: #000000 !important;
-        }
+        /* Les anciens styles du popover ont été retirés pour utiliser le chat natif */
         </style>
     """, unsafe_allow_html=True)
 
