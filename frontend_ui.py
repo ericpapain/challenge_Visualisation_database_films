@@ -200,6 +200,7 @@ def inject_custom_css():
             }
         }
         
+        div[data-testid="stFragment"]:has(div[data-testid="stPopover"]),
         div[data-testid="stPopover"] {
             position: fixed !important;
             bottom: 50px !important;

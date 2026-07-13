@@ -12,3 +12,4 @@ langchain-experimental
 faiss-cpu
 sentence-transformers
 tabulate
+torchvision
