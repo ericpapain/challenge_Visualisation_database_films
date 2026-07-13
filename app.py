@@ -259,7 +259,6 @@ if True:
                                     st.markdown(reply)
                                     st.session_state.messages_agent.append({"role": "assistant", "content": reply})
                                     st.session_state.pending_question = None
-                                    st.rerun()
                                 
                                 elif intent == "FOLLOWUP":
                                     context_info = ""
@@ -271,7 +270,6 @@ if True:
                                     st.markdown(reply)
                                     st.session_state.messages_agent.append({"role": "assistant", "content": reply})
                                     st.session_state.pending_question = None
-                                    st.rerun()
                                 
                                 elif intent == "PANDAS":
                                     pandas_prompt = get_pandas_prompt(user_q)
@@ -308,7 +306,6 @@ if True:
                                         st.session_state.messages_agent.append({"role": "assistant", "content": reply})
                                         
                                     st.session_state.pending_question = None
-                                    st.rerun()
                                 
                                 else:
                                     with st.spinner("Chargement de la base de connaissances (RAG)..."):
@@ -325,7 +322,6 @@ if True:
                                     st.markdown(reply)
                                     st.session_state.messages_agent.append({"role": "assistant", "content": reply})
                                     st.session_state.pending_question = None
-                                    st.rerun()
                             
                             except Exception as e:
                                 error_str = str(e)
@@ -341,7 +337,6 @@ if True:
                                 st.error(error_msg)
                                 st.session_state.messages_agent.append({"role": "assistant", "content": error_msg})
                                 st.session_state.pending_question = None
-                                st.rerun()
                                 
     except Exception as e:
         st.error(f"Erreur d'initialisation LLM : {e}")
