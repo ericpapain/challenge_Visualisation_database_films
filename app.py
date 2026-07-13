@@ -233,6 +233,11 @@ if True:
                 max-height: 90vh !important;
                 resize: both !important;
                 overflow: auto !important;
+                direction: rtl !important; /* Déplace la poignée de redimensionnement à gauche */
+            }
+            /* Remettre le texte dans le bon sens de lecture (gauche à droite) */
+            div[data-testid="stPopoverBody"] > * {
+                direction: ltr !important;
             }
             /* Fixer le champ de texte (sticky) pour ne pas qu'il scrolle */
             div.st-key-chat_input_widget {
