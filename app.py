@@ -225,8 +225,13 @@ if True:
                 line-height: 1 !important;
             }
             div[data-testid="stPopoverBody"] {
-                width: 350px !important;
-                max-width: 90vw !important;
+                width: 400px !important;
+                min-width: 300px !important;
+                min-height: 300px !important;
+                max-width: 95vw !important;
+                max-height: 90vh !important;
+                resize: both !important;
+                overflow: auto !important;
             }
             div[data-testid="stPopoverBody"] p,
             div[data-testid="stPopoverBody"] li,
@@ -243,9 +248,9 @@ if True:
                 if not api_key:
                     st.warning("⚠️ **Entrez votre clé API dans la sidebar.**")
                 
-                st.text_input("Posez votre question...", key="chat_input_widget", on_change=submit_chat, disabled=not bool(api_key))
+                st.text_input("Vous pouvez décrire qu'est ce que vous voulez voir comme film (émotion, genre, etc)en langage natrelle et je vous ferais des recommendation. Posez votre question...", key="chat_input_widget", on_change=submit_chat, disabled=not bool(api_key))
                 
-                chat_container = st.container(height=350)
+                chat_container = st.container()
                 with chat_container:
                     for idx, msg in enumerate(st.session_state.messages_agent):
                         with st.chat_message(msg["role"]):
