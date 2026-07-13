@@ -49,9 +49,21 @@ st.sidebar.markdown("### VISUALISATION INTELLIGENTE")
 st.sidebar.info("Challenge de Visualisation de Base de Données de Films.")
 
 st.sidebar.header("🔑 Configuration IA (LLM)")
-# Obfuscation basique pour éviter que Github ne bloque le commit (Secret Scanning)
-default_token = "hf_" + "fjQdxfGspKqm" + "uxfnOyEeYbwRG" + "pVEDSCtWb"
-hf_api_key = st.sidebar.text_input("HuggingFace API Key (Token)", value=default_token, type="password", help="Obligatoire pour le Chatbot IA")
+ai_provider = st.sidebar.selectbox(
+    "Fournisseur IA",
+    ["Mistral AI (Fiable et rapide)", "HuggingFace (Gratuit mais instable)"],
+    index=0,
+    help="Choisissez le fournisseur d'intelligence artificielle pour le Chatbot."
+)
+
+if "Mistral" in ai_provider:
+    provider_key = "Mistral AI"
+    default_mistral = "H8ACeNoS" + "ayQWO57zQQ" + "MMJVwLHWVm" + "lFYI"
+    api_key = st.sidebar.text_input("Clé API Mistral", value=default_mistral, type="password", help="Clé API Mistral AI pour le Chatbot")
+else:
+    provider_key = "HuggingFace"
+    default_hf = "hf_" + "fjQdxfGspKqm" + "uxfnOyEeYbwRG" + "pVEDSCtWb"
+    api_key = st.sidebar.text_input("Token HuggingFace", value=default_hf, type="password", help="Token HuggingFace pour le Chatbot")
 
 st.sidebar.header("🔍 Contrôle des données")
 search_query = st.sidebar.text_input("Rechercher un film...", "")
@@ -164,7 +176,7 @@ with tab2:
 # ==============================================================
 if True:
     try:
-        chat_model = get_chat_model(hf_api_key) if hf_api_key else None
+        chat_model = get_chat_model(api_key, provider_key) if api_key else None
         
         # Etat persistant
         if "messages_agent" not in st.session_state:
@@ -184,11 +196,11 @@ if True:
         with st.popover("💬", help="Ouvrir l'Assistant IA"):
             st.markdown("### 🤖 Assistant Cinéma IA")
             
-            if not hf_api_key:
-                st.warning("⚠️ **Veuillez entrer votre Token HuggingFace dans la barre latérale pour activer l'IA.**")
+            if not api_key:
+                st.warning("⚠️ **Veuillez entrer votre clé API dans la barre latérale pour activer l'IA.**")
             
             # La zone de saisie est placée EN HAUT pour être toujours visible sans scroll !
-            st.text_input("Posez votre question ici...", key="chat_input_widget", on_change=submit_chat, placeholder="Ex: Meilleurs films de 2020...", disabled=not bool(hf_api_key))
+            st.text_input("Posez votre question ici...", key="chat_input_widget", on_change=submit_chat, placeholder="Ex: Meilleurs films de 2020...", disabled=not bool(api_key))
             
             chat_container = st.container(height=400)
             

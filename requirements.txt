@@ -8,6 +8,7 @@ seaborn
 langchain
 langchain-community
 langchain-huggingface
+langchain-mistralai
 langchain-experimental
 faiss-cpu
 sentence-transformers
