@@ -250,7 +250,7 @@ if True:
             div[data-testid="stPopoverBody"] span,
             div[data-testid="stPopoverBody"] .stMarkdown {
                 font-size: 13px !important;
-                color: #000000 !important;
+                color: #FFFFFF !important;
             }
             </style>
             """, unsafe_allow_html=True)
