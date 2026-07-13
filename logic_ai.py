@@ -55,7 +55,7 @@ def detect_intent(user_q, history):
 @st.cache_resource
 def get_chat_model(hf_api_key):
     llm_endpoint = HuggingFaceEndpoint(
-        repo_id="meta-llama/Meta-Llama-3-8B-Instruct",
+        repo_id="mistralai/Mistral-7B-Instruct-v0.3",
         huggingfacehub_api_token=hf_api_key,
         temperature=0.1,
         max_new_tokens=1024

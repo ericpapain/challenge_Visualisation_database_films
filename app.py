@@ -321,6 +321,8 @@ if True:
                                     error_msg = "⚠️ **Crédits API HuggingFace épuisés.** Votre quota mensuel gratuit est atteint."
                                 elif "401" in error_str or "Unauthorized" in error_str or "Invalid username" in error_str:
                                     error_msg = "⚠️ Le token a ete expirer, pensez a reactiver ou a demander a epmezatio@gmail.com de le reactualiser."
+                                elif "model_not_supported" in error_str or "400 Bad Request" in error_str:
+                                    error_msg = "⚠️ **Modèle IA temporairement indisponible.** Le fournisseur HuggingFace a désactivé ce modèle. Veuillez réessayer plus tard ou contacter l'administrateur."
                                 else:
                                     import traceback
                                     error_msg = f"❌ Erreur : {repr(e)}\n\n```\n{traceback.format_exc()}\n```"
