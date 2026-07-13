@@ -225,13 +225,25 @@ if True:
                 line-height: 1 !important;
             }
             div[data-testid="stPopoverBody"] {
-                width: 400px !important;
-                min-width: 300px !important;
-                min-height: 300px !important;
+                width: 500px !important;
+                height: 60vh !important;
+                min-width: 350px !important;
+                min-height: 400px !important;
                 max-width: 95vw !important;
                 max-height: 90vh !important;
                 resize: both !important;
                 overflow: auto !important;
+            }
+            /* Fixer le champ de texte (sticky) pour ne pas qu'il scrolle */
+            div.st-key-chat_input_widget {
+                position: sticky !important;
+                top: 0 !important;
+                z-index: 9999 !important;
+                background-color: #0E1117 !important; /* Couleur de fond foncée par défaut de Streamlit */
+                padding-top: 10px !important;
+                padding-bottom: 15px !important;
+                margin-top: -10px !important;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
             }
             div[data-testid="stPopoverBody"] p,
             div[data-testid="stPopoverBody"] li,
