@@ -187,148 +187,194 @@ if True:
             st.session_state.pending_question = None
 
         # ==============================================================
-        # NOUVEAU CHATBOT DANS LA BARRE LATERALE (STABLE)
+        # CHATBOT FLOTTANT ET CLIGNOTANT (ANGLE DROIT)
         # ==============================================================
-        with st.sidebar:
-            st.markdown("---")
-            st.markdown("### 💬 Assistant Cinéma IA")
-            
-            if not api_key:
-                st.warning("⚠️ **Entrez votre clé API plus haut pour activer l'IA.**")
-            
-            # Conteneur pour l'historique des messages
-            chat_container = st.container(height=500)
-            with chat_container:
-                for idx, msg in enumerate(st.session_state.messages_agent):
-                    with st.chat_message(msg["role"]):
-                        st.markdown(msg["content"])
-                        
-                        # Afficher le DataFrame persistant s'il y en a un
-                        if "dataframe" in msg:
-                            res_df = msg["dataframe"]
-                            st.dataframe(res_df)
-                            
-                            if isinstance(res_df, pd.DataFrame) and 'Title' in res_df.columns:
-                                movies_list = res_df['Title'].dropna().unique().tolist()
-                                if movies_list:
-                                    selected = st.selectbox(
-                                        "Inspecter un film :", 
-                                        ["-- Choisissez --"] + movies_list, 
-                                        key=f"sel_movie_{idx}"
-                                    )
-                                    if selected != "-- Choisissez --":
-                                        if st.button("Voir la fiche", key=f"btn_fiche_{idx}"):
-                                            movie_row = df[df['Title'] == selected].iloc[0]
-                                            poster = movie_row['Poster_Url'] if pd.notna(movie_row['Poster_Url']) and movie_row['Poster_Url'] != "" else "https://via.placeholder.com/300x450.png?text=No+Poster"
-                                            year = movie_row['Release_Date'].year if pd.notna(movie_row['Release_Date']) else 'N/A'
-                                            show_movie_details(
-                                                title=movie_row['Title'],
-                                                poster_url=poster,
-                                                release_year=year,
-                                                vote=movie_row['Vote_Average'],
-                                                votes=movie_row['Vote_Count'],
-                                                genres=movie_row['Genre'],
-                                                overview=movie_row.get('Overview', 'Pas de synopsis disponible.')
-                                            )
-            
-            # Champ de saisie fixé en bas de la sidebar
-            if user_q := st.chat_input("Posez votre question...", disabled=not bool(api_key)):
+        def submit_chat():
+            if st.session_state.chat_input_widget:
+                user_q = st.session_state.chat_input_widget
                 st.session_state.messages_agent.append({"role": "user", "content": user_q})
-                # Afficher immédiatement la question de l'utilisateur
-                with chat_container:
-                    with st.chat_message("user"):
-                        st.markdown(user_q)
-                        
-                    with st.chat_message("assistant"):
-                        with st.spinner("Analyse en cours..."):
-                            try:
-                                history_text = ""
-                                for msg in st.session_state.messages_agent[-7:-1]:
-                                    role_name = "Utilisateur" if msg["role"] == "user" else "Assistant"
-                                    history_text += f"{role_name}: {msg['content'][:200]}\n"
-                                
-                                intent = detect_intent(user_q, st.session_state.messages_agent[1:])
-                                
-                                if intent == "GREETING":
-                                    reply = "Bonjour ! 👋 Je suis votre assistant cinéma. Posez-moi des questions sur notre base de données de films !\n\n**Exemples :**\n- *Quels sont les 5 films les plus populaires ?*\n- *Combien de films d'action y a-t-il ?*\n- *Trouve-moi des films qui parlent d'amour*\n- *Films avec une note supérieure à 8*"
-                                    st.markdown(reply)
-                                    st.session_state.messages_agent.append({"role": "assistant", "content": reply})
-                                
-                                elif intent == "FOLLOWUP":
-                                    context_info = ""
-                                    if st.session_state.last_rag_context:
-                                        context_info = f"\n\nVoici les derniers films dont nous avons parlé :\n{st.session_state.last_rag_context}"
-                                    
-                                    followup_prompt = get_followup_prompt(history_text, context_info, user_q)
-                                    reply = invoke_model(chat_model, followup_prompt)
-                                    st.markdown(reply)
-                                    st.session_state.messages_agent.append({"role": "assistant", "content": reply})
-                                
-                                elif intent == "PANDAS":
-                                    pandas_prompt = get_pandas_prompt(user_q)
-                                    generated_code = invoke_model(chat_model, pandas_prompt)
-                                    
-                                    if "```" in generated_code:
-                                        parts = generated_code.split("```")
-                                        for p in parts:
-                                            cleaned = p.replace("python", "").strip()
-                                            if cleaned.startswith("df") or cleaned.startswith("len("):
-                                                generated_code = cleaned
-                                                break
-                                    generated_code = generated_code.replace("`", "").strip()
-                                    
-                                    for line in generated_code.split('\n'):
-                                        stripped = line.strip()
-                                        if stripped and (stripped.startswith("df") or stripped.startswith("len(")):
-                                            generated_code = stripped
-                                            break
-                                    
-                                    st.caption(f"📊 Code Pandas : `{generated_code}`")
-                                    result = eval(generated_code)
-                                    
-                                    if isinstance(result, (pd.DataFrame, pd.Series)):
-                                        reply = f"Voici le tableau de résultats ({len(result)} éléments) :"
-                                        st.markdown(reply)
-                                        st.dataframe(result)
-                                        st.session_state.messages_agent.append({
-                                            "role": "assistant", 
-                                            "content": reply,
-                                            "dataframe": result
-                                        })
-                                    else:
-                                        st.metric("Résultat", result)
-                                        reply = f"Résultat : **{result}**"
-                                        st.session_state.messages_agent.append({"role": "assistant", "content": reply})
-                                
-                                else:
-                                    vector_db = get_vectorstore(df)
-                                    docs = vector_db.similarity_search(user_q, k=5)
-                                    context = ""
-                                    for i, doc in enumerate(docs, 1):
-                                        context += f"\nFilm {i}:\n{doc.page_content}\n"
-                                    
-                                    st.session_state.last_rag_context = context
-                                    rag_prompt = get_rag_prompt(user_q, context)
-                                    
-                                    reply = invoke_model(chat_model, rag_prompt)
-                                    st.markdown(reply)
-                                    st.session_state.messages_agent.append({"role": "assistant", "content": reply})
-                            
-                            except Exception as e:
-                                error_str = str(e)
-                                if "402" in error_str or "Payment Required" in error_str or "depleted" in error_str:
-                                    error_msg = "⚠️ **Crédits API HuggingFace épuisés.** Votre quota mensuel gratuit est atteint."
-                                elif "401" in error_str or "Unauthorized" in error_str or "Invalid username" in error_str:
-                                    error_msg = "⚠️ Le token a expiré, pensez à réactiver."
-                                elif "model_not_supported" in error_str or "400" in error_str:
-                                    error_msg = "⚠️ **Modèle IA temporairement indisponible.** Veuillez réessayer."
-                                else:
-                                    import traceback
-                                    error_msg = f"❌ Erreur : {repr(e)}\n\n```\n{traceback.format_exc()}\n```"
-                                st.error(error_msg)
-                                st.session_state.messages_agent.append({"role": "assistant", "content": error_msg})
+                st.session_state.pending_question = user_q
+                st.session_state.chat_input_widget = ""
+
+        @st.fragment
+        def render_chat_fragment():
+            # CSS pour le clignotement et le design du bouton
+            st.markdown("""
+            <style>
+            @keyframes pulse-glow {
+                0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(233, 4, 77, 0.8); }
+                50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(233, 4, 77, 0); }
+                100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(233, 4, 77, 0); }
+            }
+            div[data-testid="stPopover"] button {
+                border-radius: 50% !important;
+                width: 80px !important;
+                height: 80px !important;
+                background: linear-gradient(135deg, #042B59, #E9044D) !important;
+                color: white !important;
+                border: 4px solid white !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                animation: pulse-glow 2s infinite !important;
+            }
+            div[data-testid="stPopover"] button p {
+                font-size: 45px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 1 !important;
+            }
+            div[data-testid="stPopoverBody"] {
+                width: 350px !important;
+                max-width: 90vw !important;
+            }
+            div[data-testid="stPopoverBody"] p,
+            div[data-testid="stPopoverBody"] li,
+            div[data-testid="stPopoverBody"] span,
+            div[data-testid="stPopoverBody"] .stMarkdown {
+                font-size: 13px !important;
+                color: #000000 !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            with st.popover("💬", help="Ouvrir l'Assistant IA"):
+                st.markdown("### 🤖 Assistant Cinéma IA")
+                if not api_key:
+                    st.warning("⚠️ **Entrez votre clé API dans la sidebar.**")
                 
-                st.rerun()
+                st.text_input("Posez votre question...", key="chat_input_widget", on_change=submit_chat, disabled=not bool(api_key))
+                
+                chat_container = st.container(height=350)
+                with chat_container:
+                    for idx, msg in enumerate(st.session_state.messages_agent):
+                        with st.chat_message(msg["role"]):
+                            st.markdown(msg["content"])
+                            if "dataframe" in msg:
+                                res_df = msg["dataframe"]
+                                st.dataframe(res_df)
+                                if isinstance(res_df, pd.DataFrame) and 'Title' in res_df.columns:
+                                    movies_list = res_df['Title'].dropna().unique().tolist()
+                                    if movies_list:
+                                        selected = st.selectbox("Inspecter :", ["-- Choisissez --"] + movies_list, key=f"sel_movie_{idx}")
+                                        if selected != "-- Choisissez --":
+                                            if st.button("Voir la fiche", key=f"btn_fiche_{idx}"):
+                                                movie_row = df[df['Title'] == selected].iloc[0]
+                                                poster = movie_row['Poster_Url'] if pd.notna(movie_row['Poster_Url']) and movie_row['Poster_Url'] != "" else "https://via.placeholder.com/300x450.png?text=No+Poster"
+                                                year = movie_row['Release_Date'].year if pd.notna(movie_row['Release_Date']) else 'N/A'
+                                                show_movie_details(
+                                                    title=movie_row['Title'], poster_url=poster, release_year=year,
+                                                    vote=movie_row['Vote_Average'], votes=movie_row['Vote_Count'],
+                                                    genres=movie_row['Genre'], overview=movie_row.get('Overview', 'Pas de synopsis disponible.')
+                                                )
+                    
+                    if st.session_state.pending_question:
+                        user_q = st.session_state.pending_question
+                        with st.chat_message("assistant"):
+                            with st.spinner("Analyse en cours..."):
+                                try:
+                                    history_text = ""
+                                    for msg in st.session_state.messages_agent[-7:-1]:
+                                        role_name = "Utilisateur" if msg["role"] == "user" else "Assistant"
+                                        history_text += f"{role_name}: {msg['content'][:200]}\n"
+                                    
+                                    intent = detect_intent(user_q, st.session_state.messages_agent[1:])
+                                    
+                                    if intent == "GREETING":
+                                        reply = "Bonjour ! 👋 Je suis votre assistant cinéma. Posez-moi des questions sur notre base de données de films !"
+                                        st.markdown(reply)
+                                        st.session_state.messages_agent.append({"role": "assistant", "content": reply})
+                                        st.session_state.pending_question = None
+                                    
+                                    elif intent == "FOLLOWUP":
+                                        context_info = f"\n\nVoici les derniers films dont nous avons parlé :\n{st.session_state.last_rag_context}" if st.session_state.last_rag_context else ""
+                                        followup_prompt = get_followup_prompt(history_text, context_info, user_q)
+                                        reply = invoke_model(chat_model, followup_prompt)
+                                        st.markdown(reply)
+                                        st.session_state.messages_agent.append({"role": "assistant", "content": reply})
+                                        st.session_state.pending_question = None
+                                    
+                                    elif intent == "PANDAS":
+                                        pandas_prompt = get_pandas_prompt(user_q)
+                                        generated_code = invoke_model(chat_model, pandas_prompt)
+                                        if "```" in generated_code:
+                                            parts = generated_code.split("```")
+                                            for p in parts:
+                                                cleaned = p.replace("python", "").strip()
+                                                if cleaned.startswith("df") or cleaned.startswith("len("):
+                                                    generated_code = cleaned
+                                                    break
+                                        generated_code = generated_code.replace("`", "").strip()
+                                        for line in generated_code.split('\n'):
+                                            stripped = line.strip()
+                                            if stripped and (stripped.startswith("df") or stripped.startswith("len(")):
+                                                generated_code = stripped
+                                                break
+                                        
+                                        st.caption(f"📊 Code Pandas : `{generated_code}`")
+                                        result = eval(generated_code)
+                                        
+                                        if isinstance(result, (pd.DataFrame, pd.Series)):
+                                            reply = f"Voici le tableau de résultats ({len(result)} éléments) :"
+                                            st.markdown(reply)
+                                            st.dataframe(result)
+                                            st.session_state.messages_agent.append({"role": "assistant", "content": reply, "dataframe": result})
+                                        else:
+                                            st.metric("Résultat", result)
+                                            reply = f"Résultat : **{result}**"
+                                            st.session_state.messages_agent.append({"role": "assistant", "content": reply})
+                                        st.session_state.pending_question = None
+                                    
+                                    else:
+                                        vector_db = get_vectorstore(df)
+                                        docs = vector_db.similarity_search(user_q, k=5)
+                                        context = ""
+                                        for i, doc in enumerate(docs, 1):
+                                            context += f"\nFilm {i}:\n{doc.page_content}\n"
+                                        st.session_state.last_rag_context = context
+                                        rag_prompt = get_rag_prompt(user_q, context)
+                                        reply = invoke_model(chat_model, rag_prompt)
+                                        st.markdown(reply)
+                                        st.session_state.messages_agent.append({"role": "assistant", "content": reply})
+                                        st.session_state.pending_question = None
+                                
+                                except Exception as e:
+                                    error_str = str(e)
+                                    if "402" in error_str or "Payment Required" in error_str or "depleted" in error_str:
+                                        error_msg = "⚠️ **Crédits API HuggingFace épuisés.** Votre quota mensuel gratuit est atteint."
+                                    elif "401" in error_str or "Unauthorized" in error_str or "Invalid username" in error_str:
+                                        error_msg = "⚠️ Le token a expiré, pensez à réactiver."
+                                    elif "model_not_supported" in error_str or "400" in error_str:
+                                        error_msg = "⚠️ **Modèle IA temporairement indisponible.** Veuillez réessayer."
+                                    else:
+                                        import traceback
+                                        error_msg = f"❌ Erreur : {repr(e)}\n\n```\n{traceback.format_exc()}\n```"
+                                    st.error(error_msg)
+                                    st.session_state.messages_agent.append({"role": "assistant", "content": error_msg})
+                                    st.session_state.pending_question = None
+                
+            # Injection JS robuste pour ancrer le fragment stFragment ou le popover
+            import streamlit.components.v1 as components
+            components.html("""
+            <script>
+                const doc = window.parent.document;
+                const popovers = doc.querySelectorAll('div[data-testid="stPopover"]');
+                popovers.forEach(p => {
+                    if(p.innerText.includes('💬')) {
+                        const frag = p.closest('div[data-testid="stFragment"]');
+                        const target = frag ? frag : p;
+                        target.style.position = 'fixed';
+                        target.style.bottom = '50px';
+                        target.style.right = '50px';
+                        target.style.zIndex = '999999';
+                        target.style.width = 'auto';
+                        target.style.height = 'auto';
+                    }
+                });
+            </script>
+            """, height=0)
+
+        render_chat_fragment()
 
     except Exception as e:
         st.error(f"Erreur d'initialisation LLM : {e}")
