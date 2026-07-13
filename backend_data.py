@@ -1,8 +1,6 @@
 import os
 import pandas as pd
 import streamlit as st
-from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
 
 FAISS_INDEX_PATH = "faiss_index"
 
@@ -23,6 +21,8 @@ def load_data() -> pd.DataFrame:
 
 @st.cache_resource(show_spinner=False)
 def get_vectorstore(_df):
+    from langchain_community.vectorstores import FAISS
+    from langchain_huggingface import HuggingFaceEmbeddings
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
     if os.path.exists(FAISS_INDEX_PATH):
         return FAISS.load_local(FAISS_INDEX_PATH, embeddings, allow_dangerous_deserialization=True)

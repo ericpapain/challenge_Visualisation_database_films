@@ -1,7 +1,5 @@
 import re
 import streamlit as st
-from langchain_huggingface import HuggingFaceEndpoint, ChatHuggingFace
-from langchain_mistralai import ChatMistralAI
 from langchain_core.messages import HumanMessage
 
 GREETINGS = {"bonjour", "salut", "hello", "hi", "hey", "coucou", "bonsoir", "yo", "merci"}
@@ -57,6 +55,7 @@ def detect_intent(user_q, history):
 def get_chat_model(api_key, provider="HuggingFace"):
     """Instancie le modèle LLM en fonction du fournisseur choisi."""
     if provider == "Mistral AI":
+        from langchain_mistralai import ChatMistralAI
         return ChatMistralAI(
             model="mistral-small-latest",
             mistral_api_key=api_key,
@@ -65,6 +64,7 @@ def get_chat_model(api_key, provider="HuggingFace"):
         )
     else:
         # HuggingFace (par défaut)
+        from langchain_huggingface import HuggingFaceEndpoint, ChatHuggingFace
         llm_endpoint = HuggingFaceEndpoint(
             repo_id="mistralai/Mistral-7B-Instruct-v0.3",
             huggingfacehub_api_token=api_key,
