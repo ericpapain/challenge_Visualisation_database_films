@@ -158,13 +158,13 @@ with tab1:
     st.write("---")
     col1, col2, col3, col4, col5 = st.columns([1, 1, 2, 1, 1])
     with col2:
-        if st.button("⬅️ Précédent", disabled=(st.session_state.page <= 1), use_container_width=True):
+        if st.button("⬅️ Précédent", disabled=(st.session_state.page <= 1), width="stretch"):
             st.session_state.page -= 1
             st.rerun()
     with col3:
         st.markdown(f"<div style='text-align: center; padding-top: 5px;'><b>Page {st.session_state.page} sur {total_pages}</b></div>", unsafe_allow_html=True)
     with col4:
-        if st.button("Suivant ➡️", disabled=(st.session_state.page >= total_pages), use_container_width=True):
+        if st.button("Suivant ➡️", disabled=(st.session_state.page >= total_pages), width="stretch"):
             st.session_state.page += 1
             st.rerun()
 

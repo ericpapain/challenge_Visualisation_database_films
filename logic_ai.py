@@ -51,7 +51,7 @@ def detect_intent(user_q, history):
     # 4. Par defaut -> RAG
     return "RAG"
 
-@st.cache_resource
+@st.cache_resource(show_spinner=False)
 def get_chat_model(api_key, provider="HuggingFace"):
     """Instancie le modèle LLM en fonction du fournisseur choisi."""
     if provider == "Mistral AI":
