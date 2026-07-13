@@ -42,9 +42,6 @@ with st.spinner("Initialisation du jeu de données..."):
 
 all_genres = sorted(list({g.strip() for genres in df['Genre'].dropna() for g in genres.split(',')}))
 
-with st.spinner("Initialisation du RAG Sémantique..."):
-    vector_db = get_vectorstore(df)
-
 # ==========================================
 # 3. INTERFACE UTILISATEUR : BARRE LATÉRALE
 # ==========================================
@@ -302,6 +299,8 @@ if True:
                                     st.rerun()
                                 
                                 else:
+                                    with st.spinner("Chargement de la base de connaissances (RAG)..."):
+                                        vector_db = get_vectorstore(df)
                                     docs = vector_db.similarity_search(user_q, k=5)
                                     context = ""
                                     for i, doc in enumerate(docs, 1):
