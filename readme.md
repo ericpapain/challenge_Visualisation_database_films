@@ -86,9 +86,9 @@ Pour garantir une base de code propre, modulaire et professionnelle (Software En
 | **Base de Données Vectorielle** | FAISS | Latest | Recherche sémantique (RAG) | Ultra-rapide, léger, local (pas de serveur externe) |
 | **Traitement de Données** | Pandas | Latest | Nettoyage, agrégation, filtrage | Standard de facto pour la data manipulation |
 | **Visualisation de Données** | Plotly | Latest | Graphiques interactifs et dynamiques | Graphiques modernes, responsives, interactif |
-| **LLM / IA** | Llama-3-8B | 8B | Génération de texte, RAG, Agent Pandas | Open-source, performant, disponible via HuggingFace |
+| **LLM / IA** | Mistral / Llama-3 | - | Génération de texte, RAG, Agent Pandas | Modèles très performants, parfaits pour le français et le code |
 | **Orchestration IA** | LangChain | Latest | Chaînage de prompts, RAG, Agent Pandas | Framework standard pour workflows IA complexes |
-| **API LLM** | HuggingFace Endpoint | - | Inférence en cloud (Llama-3) | Gratuit, fiable, sans infrastructure à gérer |
+| **API LLM** | Mistral API / HuggingFace | - | Inférence en cloud | Inférence ultra-rapide et fiable via API officielle |
 | **Dataset** | CSV (mymoviedb) | - | Source de données films | Format léger et portable |
 | **Environnement** | Python venv | - | Isolation des dépendances | Best practice Python, évite les conflits |
 | **Déploiement** | Streamlit Cloud | - | Hébergement de l'application | Gratuit, automatisé, intégration GitHub native |
@@ -134,26 +134,32 @@ L'application s'ouvrira automatiquement dans votre navigateur à l'adresse `http
 
 ---
 
-## 🔑 Configuration de l'Intelligence Artificielle (HuggingFace)
+## 🔑 Configuration de l'Intelligence Artificielle (Mistral AI & HuggingFace)
 
-L'application intègre un **Assistant IA Chatbot** propulsé par des modèles open-source ( *Llama-3-8B*). Pour pouvoir lui poser des questions et exécuter des requêtes, vous devez configurer un compte HuggingFace.
+L'application intègre un **Assistant IA Chatbot** propulsé par les modèles **Mistral AI** et **HuggingFace** (Llama-3). Pour pouvoir lui poser des questions et exécuter des requêtes, vous devez configurer une clé API.
 
-### Pourquoi un Token ?
-La plateforme utilise le Cloud de HuggingFace (via l'API `HuggingFaceEndpoint`) pour l'inférence de l'Intelligence Artificielle. Un **Token d'accès (API Key)** est obligatoire pour vous authentifier auprès de leurs services.
+L'application vous donne le choix entre deux fournisseurs d'IA, avec une préférence pour **Mistral AI** qui offre d'excellentes performances en français et en génération de code Pandas.
 
-### Comment obtenir votre Token (Gratuit) :
+### Option 1 : Obtenir un Token Mistral AI (Recommandé)
+1. Créez un compte sur la plateforme [La Plateforme Mistral](https://console.mistral.ai/).
+2. Connectez-vous, puis allez dans la section **"API Keys"** ou **"Workspace"**.
+3. Cliquez sur **"Create new API key"**.
+4. Copiez la clé générée (elle n'est affichée qu'une seule fois).
+
+### Option 2 : Obtenir un Token HuggingFace (Gratuit)
 1. Créez un compte gratuit sur [HuggingFace.co](https://huggingface.co/join).
-2. Connectez-vous et rendez-vous dans les paramètres (Settings) > **Access Tokens** (ou directement via ce lien : [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)).
-3. Cliquez sur **"New token"** ou **"Create new token"**.
-4. Donnez un nom à votre token (ex: `streamlit_app`) et sélectionnez le type `Read` (Lecture seule suffit).
-5. Copiez la clé secrète générée (qui commence souvent par `hf_...`).
+2. Rendez-vous dans les paramètres > **Access Tokens** ([Lien direct](https://huggingface.co/settings/tokens)).
+3. Cliquez sur **"Create new token"** (type `Read` ou `Fine-grained`).
+4. Copiez la clé secrète générée (commençant par `hf_...`).
 
 ### Où l'insérer dans l'application ?
-Une fois l'application Streamlit lancée, ouvrez le panneau latéral gauche (Barre latérale).
-Dans la section **"🔑 Configuration IA (LLM)"**, vous verrez un champ `HuggingFace API Key (Token)`. 
-Collez simplement votre Token dans ce champ.
-*Note : Un token par défaut est pré-rempli dans le code pour la démonstration (au cas où).*
+Une fois l'application Streamlit lancée, ouvrez le panneau latéral (Sidebar).
+Dans la section **"🔑 Configuration IA (LLM)"** :
+1. Sélectionnez votre **Fournisseur IA** (Mistral AI ou HuggingFace).
+2. Collez votre Token dans le champ **"API Key (Token)"**.
 
-**Dès que le token est renseigné, le bouton flottant (Chatbot rouge clignotant) devient actif en bas à droite de l'écran.** Vous pouvez alors poser vos questions !
+*Note : Un token par défaut est parfois pré-rempli dans le code pour la démonstration.*
 
-*NB* : le token entrée par défaut peut aussi expirer, dans se cas il faudra juste me faire un mail pour que je le réactive (epmezatio@gmail.com). De même sur HugginFace, il peut arriver que lorsqu'on lance l'application, on reçoive une erreur `401 Unauthorized` ce qui signifie que le token est arrivé à expiration. Dans ce cas, remplacez-le par votre propre token HuggingFace.
+**Dès que le token est renseigné, le bouton de l'Assistant IA clignotant devient actif en bas à droite de l'écran.** Vous pouvez alors l'agrandir et poser vos questions !
+
+*NB* : Si l'IA renvoie une erreur (comme `401 Unauthorized`), cela signifie que le token fourni a expiré, a été révoqué, ou que vos crédits API sont épuisés. Dans ce cas, générez et utilisez une nouvelle clé API via les plateformes mentionnées ci-dessus, ou contactez l'administrateur (epmezatio@gmail.com).
