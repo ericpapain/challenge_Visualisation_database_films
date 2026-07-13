@@ -2,6 +2,11 @@
 
 ## Vous pouvez accéder directement à l'application via le lien : https://hi-paris-challenge-visualisation.streamlit.app/
 
+> **⚠️ Note importante sur le démarrage de l'application en ligne :**
+> L'application est hébergée sur la version gratuite de Streamlit Community Cloud. Si personne ne l'a consultée récemment, l'application peut se mettre "en veille" (Sleep mode).
+> - Si vous arrivez sur une page indiquant que l'application est en veille, cliquez simplement sur le bouton **"Yes, get this app back up!"** pour la réveiller.
+> - Le premier démarrage (Cold Start) peut prendre entre **1 à 3 minutes** car le serveur doit télécharger et installer les lourdes librairies d'Intelligence Artificielle (PyTorch, FAISS) nécessaires au fonctionnement du Chatbot. Merci de patienter le temps que l'écran de chargement se termine.
+
 Cette application est un démonstrateur interactif alliant **Exploration Visuelle de données**, **Statistiques (Dataviz)** et **Intelligence Artificielle (RAG & Agent Pandas)**.
 
 ---
