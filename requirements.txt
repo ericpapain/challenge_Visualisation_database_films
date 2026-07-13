@@ -1,3 +1,6 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+torchvision
 streamlit
 pandas
 numpy<2.0.0
@@ -12,4 +15,3 @@ langchain-experimental
 faiss-cpu
 sentence-transformers
 tabulate
-torchvision
